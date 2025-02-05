@@ -11,3 +11,4 @@ public class OfficeApplication {
 	}
 
 }
+//http://localhost:8080/coffee/
