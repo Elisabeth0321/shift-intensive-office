@@ -1,93 +1,75 @@
 package by.koronatech.office.core.service.impl;
 
-import by.koronatech.office.api.dto.employee.CreateEmployeeDTO;
-import by.koronatech.office.api.dto.employee.GetEmployeeDTO;
-import by.koronatech.office.core.mapper.employee.CreateEmployeeMapper;
-import by.koronatech.office.core.mapper.employee.GetEmployeeMapper;
+import by.koronatech.office.api.dto.EmployeeDTO;
+import by.koronatech.office.core.mapper.EmployeeMapper;
 import by.koronatech.office.core.service.DepartmentService;
 import by.koronatech.office.core.service.EmployeeService;
+import by.koronatech.office.core.service.exception.NotFoundException;
+import by.koronatech.office.entity.Department;
 import by.koronatech.office.entity.Employee;
+import by.koronatech.office.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final GetEmployeeMapper getEmployeeMapper;
-    private final CreateEmployeeMapper createEmployeeMapper;
-
     private final DepartmentService departmentService;
-
-    private final List<Employee> cacheRepository = new ArrayList<>(
-            List.of(
-                    Employee.builder().id(1L).name("Сидоров Василий").salary(520.3).department("Бухгалтерия").manager(false).build(),
-                    Employee.builder().id(2L).name("Полякова Светлана").salary(500.1).department("Бухгалтерия").manager(false).build()
-            )
-    );
+    private final EmployeeMapper employeeMapper;
+    private final EmployeeRepository employeeRepository;
 
     @Override
-    public GetEmployeeDTO add(CreateEmployeeDTO createEmployeeDTO) {
-        return getEmployeeMapper.toDto(createEmployeeMapper.toEntity(createEmployeeDTO));
+    public EmployeeDTO add(EmployeeDTO createEmployeeDTO) {
+        Employee employee = employeeMapper.toEntity(createEmployeeDTO);
+
+        employee.setDepartment(departmentService.findByName(createEmployeeDTO.getDepartmentName()));
+
+        employee = employeeRepository.save(employee);
+        return employeeMapper.toDto(employee);
     }
 
     @Override
-    public Page<GetEmployeeDTO> getByDepartment(Long departmentId, Pageable pageable) {
-        String departmentName = departmentService.findById(departmentId).getName();
+    public Page<EmployeeDTO> getByDepartment(long departmentId, Pageable pageable) {
+        return employeeRepository.findByDepartmentId(departmentId, pageable)
+                .map(employeeMapper::toDto);
+    }
 
-        if (departmentName == null) {
-            return Page.empty();
+    @Override
+    public EmployeeDTO promoteToManager(long id) {
+        Employee employee = findById(id);
+
+        if (employee.getIsManager() != null && employee.getIsManager()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Сотрудник с ID " + id + " уже является менеджером");
         }
 
-        List<GetEmployeeDTO> filteredEmployees = cacheRepository.stream()
-                .filter(emp -> emp.getDepartment().equals(departmentName))
-                .map(getEmployeeMapper::toDto)
-                .toList();
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), filteredEmployees.size());
-
-        if (start >= filteredEmployees.size()) {
-            return Page.empty(pageable);
-        }
-
-        return new PageImpl<>(filteredEmployees.subList(start, end), pageable, filteredEmployees.size());
-
+        employee.setIsManager(true);
+        employeeRepository.save(employee);
+        return employeeMapper.toDto(employee);
     }
 
     @Override
-    public GetEmployeeDTO promoteToManager(Long id) {
+    public EmployeeDTO update(long id, EmployeeDTO createEmployeeDTO) {
         Employee employee = findById(id);
-        employee.setManager(true);
-        return null;
-    }
-
-    @Override
-    public GetEmployeeDTO update(long id, CreateEmployeeDTO createEmployeeDTO) {
-        Employee employee = findById(id);
-        createEmployeeMapper.merge(employee, createEmployeeDTO);
-        return null;
+        employeeMapper.merge(employee, createEmployeeDTO);
+        employeeRepository.save(employee);
+        return employeeMapper.toDto(employee);
     }
 
     @Override
     public void delete(long id) {
-        cacheRepository.removeIf(employee -> employee.getId().equals(id));
+        employeeRepository.deleteById(id);
     }
 
     private Employee findById(long id) {
-        return cacheRepository.stream()
-                .filter(employee -> employee.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Not found"));
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Сотрудник с ID " + id + " не найден"));
     }
 
 }

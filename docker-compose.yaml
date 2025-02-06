@@ -1,0 +1,25 @@
+version: "2.31"
+
+services:
+  office-db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: officeapp
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: coffee
+
+  office-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/office
+      SPRING_DATASOURCE_USERNAME: officeapp
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - office-db

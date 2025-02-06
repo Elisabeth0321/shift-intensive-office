@@ -1,6 +1,6 @@
 package by.koronatech.office.api.controller;
 
-import by.koronatech.office.api.dto.department.GetDepartmentDTO;
+import by.koronatech.office.api.dto.DepartmentDTO;
 import by.koronatech.office.core.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @GetMapping
-    public Page<GetDepartmentDTO> getAllDepartments(Pageable pageable) {
+    public Page<DepartmentDTO> getAllDepartments(Pageable pageable) {
         return departmentService.getAllDepartments(pageable);
     }
 }

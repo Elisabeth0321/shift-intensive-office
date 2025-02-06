@@ -1,21 +1,18 @@
 package by.koronatech.office.core.service;
 
-import by.koronatech.office.api.dto.employee.CreateEmployeeDTO;
-import by.koronatech.office.api.dto.employee.GetEmployeeDTO;
+import by.koronatech.office.api.dto.EmployeeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface EmployeeService {
 
-    GetEmployeeDTO add(CreateEmployeeDTO createEmployeeDTO);
+    EmployeeDTO add(EmployeeDTO employeeDTO);
 
-    Page<GetEmployeeDTO> getByDepartment(Long departmentId, Pageable pageable);
+    Page<EmployeeDTO> getByDepartment(long departmentId, Pageable pageable);
 
-    GetEmployeeDTO promoteToManager(Long id);
+    EmployeeDTO promoteToManager(long id);
 
-    GetEmployeeDTO update(long id, CreateEmployeeDTO createEmployeeDTO);
+    EmployeeDTO update(long id, EmployeeDTO employeeDTO);
 
     void delete(long id);
 }

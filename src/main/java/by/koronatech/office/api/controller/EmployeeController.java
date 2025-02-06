@@ -1,15 +1,12 @@
 package by.koronatech.office.api.controller;
 
-import by.koronatech.office.api.dto.employee.CreateEmployeeDTO;
-import by.koronatech.office.api.dto.employee.GetEmployeeDTO;
+import by.koronatech.office.api.dto.EmployeeDTO;
 import by.koronatech.office.core.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
@@ -19,22 +16,22 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping
-    public GetEmployeeDTO addEmployee(@RequestBody CreateEmployeeDTO createEmployeeDTO) {
+    public EmployeeDTO addEmployee(@RequestBody EmployeeDTO createEmployeeDTO) {
         return employeeService.add(createEmployeeDTO);
     }
 
     @GetMapping("/department/{departmentId}")
-    public Page<GetEmployeeDTO> getEmployeesByDepartment(@PathVariable Long departmentId, Pageable pageable) {
+    public Page<EmployeeDTO> getEmployeesByDepartment(@PathVariable long departmentId, Pageable pageable) {
         return employeeService.getByDepartment(departmentId, pageable);
     }
 
-    @PutMapping("/{id}/promote")
-    public GetEmployeeDTO promoteToManager(@PathVariable Long id) {
+    @PatchMapping("/{id}/promote")
+    public EmployeeDTO promoteToManager(@PathVariable long id) {
         return employeeService.promoteToManager(id);
     }
 
     @PutMapping("/{id}")
-    public GetEmployeeDTO update(@PathVariable long id, @RequestBody CreateEmployeeDTO updateEmployeeDTO) {
+    public EmployeeDTO update(@PathVariable long id, @RequestBody EmployeeDTO updateEmployeeDTO) {
         return employeeService.update(id, updateEmployeeDTO);
     }
 

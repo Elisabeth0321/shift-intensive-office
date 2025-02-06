@@ -1,5 +1,6 @@
 package by.koronatech.office.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -7,10 +8,25 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "employee")
 public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name="department_id", nullable = false)
+    private Department department;
+
+    @Column(nullable = false)
     private Double salary;
-    private String department;
-    private Boolean manager;
+
+    @Column
+    private Boolean isManager;
+
 }

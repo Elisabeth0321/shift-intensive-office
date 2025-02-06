@@ -1,4 +1,4 @@
-package by.koronatech.office.api.dto.department;
+package by.koronatech.office.api.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetDepartmentDTO {
+public class DepartmentDTO {
     private Long id;
     private String name;
 }

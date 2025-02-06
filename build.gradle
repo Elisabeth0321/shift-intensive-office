@@ -10,37 +10,50 @@ buildscript {
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'io.spring.dependency-management' version '1.1.7'
 	id 'com.avast.gradle.docker-compose' version '0.17.6'
+	id 'org.flywaydb.flyway' version '9.22.3'
 }
 
 group = 'by.koronatech'
 version = '0.0.1'
 
 java {
-	sourceCompatibility = '17'
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
 }
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot'
-	implementation 'org.springframework.boot:spring-boot-autoconfigure'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.mapstruct:mapstruct:1.6.3'
-	implementation 'com.h2database:h2:2.2.224'///////
+	implementation 'org.postgresql:postgresql'
+	implementation 'org.flywaydb:flyway-core'
 
-	compileOnly 'org.projectlombok:lombok'
-
-	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/office'
+	user = 'officeapp'
+	password = '1234'
+	baselineOnMigrate = true
+	cleanDisabled = false
 }
 
 tasks.named('test') {
