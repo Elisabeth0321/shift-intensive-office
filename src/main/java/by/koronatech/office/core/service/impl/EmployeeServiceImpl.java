@@ -5,7 +5,6 @@ import by.koronatech.office.core.mapper.EmployeeMapper;
 import by.koronatech.office.core.service.DepartmentService;
 import by.koronatech.office.core.service.EmployeeService;
 import by.koronatech.office.core.service.exception.NotFoundException;
-import by.koronatech.office.entity.Department;
 import by.koronatech.office.entity.Employee;
 import by.koronatech.office.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;

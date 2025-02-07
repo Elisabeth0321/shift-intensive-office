@@ -1,6 +1,5 @@
 package by.koronatech.office.repository;
 
-import by.koronatech.office.entity.Department;
 import by.koronatech.office.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

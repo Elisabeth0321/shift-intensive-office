@@ -8,7 +8,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,5 +22,5 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Employee> employees = new ArrayList<>();
+    private final List<Employee> employees = new ArrayList<>();
 }
