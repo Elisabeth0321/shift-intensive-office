@@ -105,9 +105,7 @@ class EmployeeServiceTest {
         employee.setIsManager(true);
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            employeeService.promoteToManager(1L);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> employeeService.promoteToManager(1L));
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
     }
@@ -141,15 +139,5 @@ class EmployeeServiceTest {
         assertDoesNotThrow(() -> employeeService.delete(1L));
 
         verify(employeeRepository, times(1)).deleteById(1L);
-    }
-
-    private Employee employeeServiceImplPrivateMethodAccess(long id) {
-        try {
-            var method = EmployeeServiceImpl.class.getDeclaredMethod("findById", long.class);
-            method.setAccessible(true);
-            return (Employee) method.invoke(employeeService, id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

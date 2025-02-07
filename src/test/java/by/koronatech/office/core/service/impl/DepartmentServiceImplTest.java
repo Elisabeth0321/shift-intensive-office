@@ -69,23 +69,23 @@ class DepartmentServiceTest {
 
     @Test
     void getDepartmentIdByName_ShouldReturnId_WhenDepartmentExists() {
-        when(departmentRepository.findByName("IT")).thenReturn(Optional.of(department));
+        when(departmentRepository.findByName("IT-отдел")).thenReturn(Optional.of(department));
 
-        Long departmentId = departmentService.getDepartmentIdByName("IT");
+        Long departmentId = departmentService.getDepartmentIdByName("IT-отдел");
 
         assertNotNull(departmentId);
         assertEquals(1L, departmentId);
-        verify(departmentRepository, times(1)).findByName("IT");
+        verify(departmentRepository, times(1)).findByName("IT-отдел");
     }
 
     @Test
     void getDepartmentIdByName_ShouldReturnNull_WhenDepartmentDoesNotExist() {
-        when(departmentRepository.findByName("HR")).thenReturn(Optional.empty());
+        when(departmentRepository.findByName("HR-отдел")).thenReturn(Optional.empty());
 
-        Long departmentId = departmentService.getDepartmentIdByName("HR");
+        Long departmentId = departmentService.getDepartmentIdByName("HR-отдел");
 
         assertNull(departmentId);
-        verify(departmentRepository, times(1)).findByName("HR");
+        verify(departmentRepository, times(1)).findByName("HR-отдел");
     }
 
     @Test
@@ -124,19 +124,19 @@ class DepartmentServiceTest {
 
     @Test
     void findByName_ShouldThrowException_WhenNotFound() {
-        when(departmentRepository.findByName("Finance")).thenReturn(Optional.empty());
+        when(departmentRepository.findByName("PR-отдел")).thenReturn(Optional.empty());
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            departmentService.findByName("Finance");
+            departmentService.findByName("PR-отдел");
         });
 
-        assertEquals("Департамент Finance не найден", exception.getMessage());
-        verify(departmentRepository, times(1)).findByName("Finance");
+        assertEquals("Департамент PR-отдел не найден", exception.getMessage());
+        verify(departmentRepository, times(1)).findByName("PR-отдел");
     }
 
     @Test
     void shouldReturnDepartmentById() {
-        Department department = new Department(1L, "HR");
+        Department department = new Department(1L, "IT-отдел");
         when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
 
         Department result = departmentService.findById(1L);
