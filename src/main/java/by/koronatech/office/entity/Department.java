@@ -10,6 +10,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@Builder
 @Entity
 @Table(name = "department")
 public class Department {
