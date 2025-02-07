@@ -4,6 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor
 public class DepartmentDTO {
     private Long id;

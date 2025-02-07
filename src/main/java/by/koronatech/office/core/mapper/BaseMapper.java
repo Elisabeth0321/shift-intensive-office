@@ -8,7 +8,7 @@ import java.util.List;
         builder = @Builder(disableBuilder = true),
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT
+        nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_NULL
 )
 
 public interface BaseMapper<E, D> {
@@ -20,6 +20,6 @@ public interface BaseMapper<E, D> {
 
     List<E> toEntities(Iterable<D> list);
 
-    E merge(@MappingTarget E entity, D dto);
+    void merge(@MappingTarget E entity, D dto);
 
 }

@@ -1,11 +1,9 @@
-CREATE TABLE department
-(
+CREATE TABLE department (
     id   SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE employee
-(
+CREATE TABLE employee (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(255)   NOT NULL,
     department_id INT,
