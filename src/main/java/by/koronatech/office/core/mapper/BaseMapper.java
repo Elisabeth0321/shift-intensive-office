@@ -1,16 +1,20 @@
 package by.koronatech.office.core.mapper;
 
 import org.mapstruct.*;
+
 import java.util.List;
+
 
 @MapperConfig(
         componentModel = "spring",
+        builder = @Builder(disableBuilder = true),
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_NULL
+        nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT
 )
 
 public interface BaseMapper<E, D> {
+
     D toDto(E e);
 
     E toEntity(D d);
@@ -19,6 +23,6 @@ public interface BaseMapper<E, D> {
 
     List<E> toEntities(Iterable<D> list);
 
-    void merge(@MappingTarget E entity, D dto);
+    E merge(@MappingTarget E entity, D dto);
 
 }

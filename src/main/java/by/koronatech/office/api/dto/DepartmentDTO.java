@@ -4,8 +4,9 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @ToString
+@AllArgsConstructor
 @NoArgsConstructor
 public class DepartmentDTO {
     private Integer id;
