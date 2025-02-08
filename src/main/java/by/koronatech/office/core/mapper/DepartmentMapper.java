@@ -2,8 +2,19 @@ package by.koronatech.office.core.mapper;
 
 import by.koronatech.office.api.dto.DepartmentDTO;
 import by.koronatech.office.entity.Department;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
-@Mapper(config = BaseMapper.class)
-public interface DepartmentMapper extends BaseMapper<Department, DepartmentDTO> {
+@Component
+public class DepartmentMapper {
+
+    public DepartmentDTO toDto(Department department) {
+        if (department == null) {
+            return null;
+        }
+
+        return DepartmentDTO.builder()
+                .id(department.getId())
+                .name(department.getName())
+                .build();
+    }
 }
