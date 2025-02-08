@@ -42,11 +42,11 @@ class DepartmentServiceTest {
     @BeforeEach
     void setUp() {
         department = new Department();
-        department.setId(1L);
+        department.setId(1);
         department.setName("IT");
 
         departmentDTO = new DepartmentDTO();
-        departmentDTO.setId(1L);
+        departmentDTO.setId(1);
         departmentDTO.setName("IT");
     }
 
@@ -71,10 +71,10 @@ class DepartmentServiceTest {
     void getDepartmentIdByName_ShouldReturnId_WhenDepartmentExists() {
         when(departmentRepository.findByName("IT-отдел")).thenReturn(Optional.of(department));
 
-        Long departmentId = departmentService.getDepartmentIdByName("IT-отдел");
+        Integer departmentId = departmentService.getDepartmentIdByName("IT-отдел");
 
         assertNotNull(departmentId);
-        assertEquals(1L, departmentId);
+        assertEquals(1, departmentId);
         verify(departmentRepository, times(1)).findByName("IT-отдел");
     }
 
@@ -82,7 +82,7 @@ class DepartmentServiceTest {
     void getDepartmentIdByName_ShouldReturnNull_WhenDepartmentDoesNotExist() {
         when(departmentRepository.findByName("HR-отдел")).thenReturn(Optional.empty());
 
-        Long departmentId = departmentService.getDepartmentIdByName("HR-отдел");
+        Integer departmentId = departmentService.getDepartmentIdByName("HR-отдел");
 
         assertNull(departmentId);
         verify(departmentRepository, times(1)).findByName("HR-отдел");
@@ -90,25 +90,25 @@ class DepartmentServiceTest {
 
     @Test
     void findById_ShouldReturnDepartment_WhenExists() {
-        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
+        when(departmentRepository.findById(1)).thenReturn(Optional.of(department));
 
-        Department foundDepartment = departmentService.findById(1L);
+        Department foundDepartment = departmentService.findById(1);
 
         assertNotNull(foundDepartment);
         assertEquals("IT", foundDepartment.getName());
-        verify(departmentRepository, times(1)).findById(1L);
+        verify(departmentRepository, times(1)).findById(1);
     }
 
     @Test
     void findById_ShouldThrowException_WhenNotFound() {
-        when(departmentRepository.findById(2L)).thenReturn(Optional.empty());
+        when(departmentRepository.findById(2)).thenReturn(Optional.empty());
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            departmentService.findById(2L);
+            departmentService.findById(2);
         });
 
         assertEquals("Департамент с ID 2 не найден", exception.getMessage());
-        verify(departmentRepository, times(1)).findById(2L);
+        verify(departmentRepository, times(1)).findById(2);
     }
 
     @Test
@@ -136,23 +136,23 @@ class DepartmentServiceTest {
 
     @Test
     void shouldReturnDepartmentById() {
-        Department department = new Department(1L, "IT-отдел");
-        when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
+        Department department = new Department(1, "IT-отдел");
+        when(departmentRepository.findById(1)).thenReturn(Optional.of(department));
 
-        Department result = departmentService.findById(1L);
+        Department result = departmentService.findById(1);
 
         assertThat(result).isEqualTo(department);
-        verify(departmentRepository).findById(1L);
+        verify(departmentRepository).findById(1);
     }
 
     @Test
     void shouldThrowExceptionWhenDepartmentNotFound() {
-        when(departmentRepository.findById(99L)).thenReturn(Optional.empty());
+        when(departmentRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> departmentService.findById(99L))
+        assertThatThrownBy(() -> departmentService.findById(99))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Департамент с ID 99 не найден");
 
-        verify(departmentRepository).findById(99L);
+        verify(departmentRepository).findById(99);
     }
 }

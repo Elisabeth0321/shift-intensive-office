@@ -26,14 +26,14 @@ class EmployeeRepositoryTest {
     @Test
     void testFindByDepartmentId() {
         Employee employee = new Employee();
-        employee.setId(1L);
+        employee.setId(1);
         employee.setName("Вася Пупкин");
 
         Page<Employee> page = new PageImpl<>(Collections.singletonList(employee));
 
-        when(employeeRepository.findByDepartmentId(eq(1L), any(Pageable.class))).thenReturn(page);
+        when(employeeRepository.findByDepartmentId(eq(1), any(Pageable.class))).thenReturn(page);
 
-        Page<Employee> result = employeeRepository.findByDepartmentId(1L, Pageable.unpaged());
+        Page<Employee> result = employeeRepository.findByDepartmentId(1, Pageable.unpaged());
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Вася Пупкин", result.getContent().get(0).getName());

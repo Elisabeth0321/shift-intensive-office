@@ -58,7 +58,7 @@ class EmployeeControllerTest {
     @Test
     void getEmployeesByDepartment_ReturnsEmployeeList() throws Exception {
         Page<EmployeeDTO> employeePage = new PageImpl<>(List.of(employeeDTO), PageRequest.of(0, 10), 1);
-        when(employeeService.getByDepartment(eq(1L), any(PageRequest.class))).thenReturn(employeePage);
+        when(employeeService.getByDepartment(eq(1), any(PageRequest.class))).thenReturn(employeePage);
 
         mockMvc.perform(get("/employees/department/1")
                         .param("page", "0")
@@ -70,7 +70,7 @@ class EmployeeControllerTest {
 
     @Test
     void promoteToManager_ReturnsUpdatedEmployee() throws Exception {
-        when(employeeService.promoteToManager(1L)).thenReturn(employeeDTO);
+        when(employeeService.promoteToManager(1)).thenReturn(employeeDTO);
 
         mockMvc.perform(patch("/employees/1/promote")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -80,7 +80,7 @@ class EmployeeControllerTest {
 
     @Test
     void updateEmployee_ReturnsUpdatedEmployee() throws Exception {
-        when(employeeService.update(eq(1L), any(EmployeeDTO.class))).thenReturn(employeeDTO);
+        when(employeeService.update(eq(1), any(EmployeeDTO.class))).thenReturn(employeeDTO);
 
         mockMvc.perform(put("/employees/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +91,7 @@ class EmployeeControllerTest {
 
     @Test
     void deleteEmployee_ReturnsNoContent() throws Exception {
-        Mockito.doNothing().when(employeeService).delete(1L);
+        Mockito.doNothing().when(employeeService).delete(1);
 
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isOk());

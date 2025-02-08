@@ -57,7 +57,7 @@ dependencies {
 }
 
 flyway {
-	url = 'jdbc:postgresql://localhost:5432/office'
+	url = 'jdbc:postgresql://db:5432/office'
 	user = 'officeapp'
 	password = '1234'
 	baselineOnMigrate = true

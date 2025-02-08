@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 public interface DepartmentService {
     Page<DepartmentDTO> getAllDepartments(Pageable pageable);
 
-    Long getDepartmentIdByName(String departmentName);
+    Integer  getDepartmentIdByName(String departmentName);
 
-    Department findById(long id);
+    Department findById(int id);
 
     Department findByName(String departmentName);
 }

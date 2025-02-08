@@ -8,11 +8,11 @@ class EmployeeTest {
     @Test
     void shouldCreateEmployeeUsingSetters() {
         Department department = new Department();
-        department.setId(1L);
+        department.setId(1);
         department.setName("Бухгалтерия");
 
         Employee employee = new Employee();
-        employee.setId(1L);
+        employee.setId(1);
         employee.setName("Владимир Владимирович");
         employee.setSalary(5000.0);
         employee.setIsManager(false);
@@ -27,17 +27,17 @@ class EmployeeTest {
 
     @Test
     void shouldCreateEmployeeUsingBuilder() {
-        Department department = new Department(1L, "Бухгалтерия");
+        Department department = new Department(1, "Бухгалтерия");
 
         Employee employee = Employee.builder()
-                .id(2L)
+                .id(2)
                 .name("Альбус Дамблдор")
                 .salary(6000000.0)
                 .isManager(true)
                 .department(department)
                 .build();
 
-        assertThat(employee.getId()).isEqualTo(2L);
+        assertThat(employee.getId()).isEqualTo(2);
         assertThat(employee.getName()).isEqualTo("Альбус Дамблдор");
         assertThat(employee.getSalary()).isEqualTo(6000000.0);
         assertThat(employee.getIsManager()).isTrue();
@@ -46,10 +46,10 @@ class EmployeeTest {
 
     @Test
     void shouldTestEqualsAndHashCode() {
-        Department department = new Department(1L, "Бухгалтерия");
+        Department department = new Department(1, "Бухгалтерия");
 
-        Employee e1 = Employee.builder().id(1L).name("Виктор Крам").salary(3000.0).isManager(false).department(department).build();
-        Employee e2 = Employee.builder().id(1L).name("Виктор Крам").salary(3000.0).isManager(false).department(department).build();
+        Employee e1 = Employee.builder().id(1).name("Виктор Крам").salary(3000.0).isManager(false).department(department).build();
+        Employee e2 = Employee.builder().id(1).name("Виктор Крам").salary(3000.0).isManager(false).department(department).build();
 
         assertThat(e1).isEqualTo(e2);
         assertThat(e1.hashCode()).isEqualTo(e2.hashCode());

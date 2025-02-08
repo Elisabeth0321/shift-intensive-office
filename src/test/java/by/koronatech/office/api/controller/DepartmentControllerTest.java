@@ -38,7 +38,7 @@ class DepartmentControllerTest {
     @BeforeEach
     void setUp() {
         departmentDTO = new DepartmentDTO();
-        departmentDTO.setId(1L);
+        departmentDTO.setId(1);
         departmentDTO.setName("IT-отдел");
     }
 

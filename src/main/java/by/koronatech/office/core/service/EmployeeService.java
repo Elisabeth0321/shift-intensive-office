@@ -10,12 +10,12 @@ public interface EmployeeService {
 
     EmployeeDTO add(EmployeeDTO employeeDTO);
 
-    Page<EmployeeDTO> getByDepartment(long departmentId, Pageable pageable);
+    Page<EmployeeDTO> getByDepartment(int departmentId, Pageable pageable);
 
-    EmployeeDTO promoteToManager(long id);
+    EmployeeDTO promoteToManager(int id);
 
-    EmployeeDTO update(long id, EmployeeDTO employeeDTO);
+    EmployeeDTO update(int id, EmployeeDTO employeeDTO);
 
-    void delete(long id);
+    void delete(int id);
 
 }

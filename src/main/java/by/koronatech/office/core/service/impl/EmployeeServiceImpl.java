@@ -35,13 +35,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeDTO> getByDepartment(long departmentId, Pageable pageable) {
+    public Page<EmployeeDTO> getByDepartment(int departmentId, Pageable pageable) {
         return employeeRepository.findByDepartmentId(departmentId, pageable)
                 .map(employeeMapper::toDto);
     }
 
     @Override
-    public EmployeeDTO promoteToManager(long id) {
+    public EmployeeDTO promoteToManager(int id) {
         Employee employee = findById(id);
 
         if (employee.getIsManager() != null && employee.getIsManager()) {
@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO update(long id, EmployeeDTO createEmployeeDTO) {
+    public EmployeeDTO update(int id, EmployeeDTO createEmployeeDTO) {
         Employee employee = findById(id);
         employeeMapper.merge(employee, createEmployeeDTO);
         employeeRepository.save(employee);
@@ -62,11 +62,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(int id) {
         employeeRepository.deleteById(id);
     }
 
-    private Employee findById(long id) {
+    private Employee findById(int id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Сотрудник с ID " + id + " не найден"));
     }

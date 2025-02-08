@@ -21,7 +21,7 @@ class DepartmentRepositoryTest {
     @Test
     void testFindByName() {
         Department department = new Department();
-        department.setId(1L);
+        department.setId(1);
         department.setName("IT-отдел");
 
         when(departmentRepository.findByName(eq("IT-отдел"))).thenReturn(Optional.of(department));
@@ -29,7 +29,7 @@ class DepartmentRepositoryTest {
         Optional<Department> result = departmentRepository.findByName("IT-отдел");
 
         assertEquals(true, result.isPresent());
-        assertEquals(1L, result.get().getId());
+        assertEquals(1, result.get().getId());
         assertEquals("IT-отдел", result.get().getName());
     }
 }

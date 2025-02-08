@@ -4,10 +4,10 @@ import lombok.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
 public class DepartmentDTO {
-    private Long id;
+    private Integer id;
     private String name;
 }

@@ -1,29 +1,30 @@
-version: "3.8"
-
 services:
-  office-db:
-    image: postgres:12
-    container_name: office-db
-    restart: always
+  db:
+    image: postgres:14
+    container_name: db
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: officeapp
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: office
+    networks:
+      - app-network
 
-  office-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: office-app
-    restart: always
+  app:
+    build: .
+    container_name: app
     ports:
-      - "0:8080"
+      - "8080:8080"
+    depends_on:
+      - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/office
       SPRING_DATASOURCE_USERNAME: officeapp
       SPRING_DATASOURCE_PASSWORD: 1234
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    depends_on:
-      - office-db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

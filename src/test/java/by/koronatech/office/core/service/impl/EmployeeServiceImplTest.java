@@ -47,11 +47,11 @@ class EmployeeServiceTest {
         MockitoAnnotations.openMocks(this);
 
         department = new Department();
-        department.setId(1L);
+        department.setId(1);
         department.setName("PR-отдел");
 
         employee = new Employee();
-        employee.setId(1L);
+        employee.setId(1);
         employee.setName("Вася Пупкин");
         employee.setDepartment(department);
         employee.setIsManager(false);
@@ -78,10 +78,10 @@ class EmployeeServiceTest {
     @Test
     void getByDepartment_ReturnsPagedEmployees() {
         Page<Employee> employeePage = new PageImpl<>(List.of(employee));
-        when(employeeRepository.findByDepartmentId(eq(1L), any(Pageable.class))).thenReturn(employeePage);
+        when(employeeRepository.findByDepartmentId(eq(1), any(Pageable.class))).thenReturn(employeePage);
         when(employeeMapper.toDto(any(Employee.class))).thenReturn(employeeDTO);
 
-        Page<EmployeeDTO> result = employeeService.getByDepartment(1L, Pageable.unpaged());
+        Page<EmployeeDTO> result = employeeService.getByDepartment(1, Pageable.unpaged());
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Вася Пупкин", result.getContent().get(0).getName());
@@ -89,11 +89,11 @@ class EmployeeServiceTest {
 
     @Test
     void promoteToManager_Success() {
-        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         when(employeeMapper.toDto(any(Employee.class))).thenReturn(employeeDTO);
 
-        EmployeeDTO result = employeeService.promoteToManager(1L);
+        EmployeeDTO result = employeeService.promoteToManager(1);
 
         assertNotNull(result);
         assertTrue(employee.getIsManager());
@@ -103,16 +103,16 @@ class EmployeeServiceTest {
     @Test
     void promoteToManager_AlreadyManager_ThrowsException() {
         employee.setIsManager(true);
-        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> employeeService.promoteToManager(1L));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> employeeService.promoteToManager(1));
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
     }
 
     @Test
     void updateEmployee_ReturnsUpdatedEmployee() {
-        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
 
         doAnswer(invocation -> {
             Employee emp = invocation.getArgument(0);
@@ -124,7 +124,7 @@ class EmployeeServiceTest {
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
         when(employeeMapper.toDto(any(Employee.class))).thenReturn(employeeDTO);
 
-        EmployeeDTO result = employeeService.update(1L, employeeDTO);
+        EmployeeDTO result = employeeService.update(1, employeeDTO);
 
         assertNotNull(result);
         assertEquals("Вася Пупкин", result.getName());
@@ -134,10 +134,10 @@ class EmployeeServiceTest {
 
     @Test
     void deleteEmployee_Success() {
-        doNothing().when(employeeRepository).deleteById(1L);
+        doNothing().when(employeeRepository).deleteById(1);
 
-        assertDoesNotThrow(() -> employeeService.delete(1L));
+        assertDoesNotThrow(() -> employeeService.delete(1));
 
-        verify(employeeRepository, times(1)).deleteById(1L);
+        verify(employeeRepository, times(1)).deleteById(1);
     }
 }

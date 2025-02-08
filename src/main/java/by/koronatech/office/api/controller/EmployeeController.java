@@ -21,22 +21,22 @@ public class EmployeeController {
     }
 
     @GetMapping("/department/{departmentId}")
-    public Page<EmployeeDTO> getEmployeesByDepartment(@PathVariable long departmentId, Pageable pageable) {
+    public Page<EmployeeDTO> getEmployeesByDepartment(@PathVariable int departmentId, Pageable pageable) {
         return employeeService.getByDepartment(departmentId, pageable);
     }
 
     @PatchMapping("/{id}/promote")
-    public EmployeeDTO promoteToManager(@PathVariable long id) {
+    public EmployeeDTO promoteToManager(@PathVariable int id) {
         return employeeService.promoteToManager(id);
     }
 
     @PutMapping("/{id}")
-    public EmployeeDTO update(@PathVariable long id, @RequestBody EmployeeDTO updateEmployeeDTO) {
+    public EmployeeDTO update(@PathVariable int id, @RequestBody EmployeeDTO updateEmployeeDTO) {
         return employeeService.update(id, updateEmployeeDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable int id) {
         employeeService.delete(id);
         log.info("All's good");
     }
